@@ -1,6 +1,6 @@
 # Money Tools — Starter Project
 
-The app includes five tools: income tax estimator, currency converter, global gold rates, salary take-home estimator, and monthly expense calculator.
+The app includes a toolkit homepage, five tools (income tax estimator, currency converter, global gold rates, salary take-home estimator, and monthly expense calculator), and a financial guides section with general educational explainers.
 
 The currency converter uses reference rates from [ExchangeRate-API](https://www.exchangerate-api.com/). Gold rates use a USD spot quote from [Gold-API](https://gold-api.com/) converted using those reference exchange rates. Both rates require an internet connection and can be refreshed in the app. Gold estimates exclude local premiums, purity adjustments, taxes and jeweller fees.
 

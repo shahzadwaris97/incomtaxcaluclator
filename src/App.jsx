@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
-  ArrowDownUp, ArrowUpRight, Calculator, Coins, Download, Globe2, RefreshCw,
-  Wallet,
+  ArrowDownUp, ArrowUpRight, BookOpenText, Calculator, ChartNoAxesCombined,
+  Coins, Download, Globe2, House, RefreshCw, ShieldCheck, Sparkles, Wallet,
 } from 'lucide-react';
 import { calculate, countries } from './tax.js';
 
@@ -14,11 +14,78 @@ const currencies = [
   ['NZD', 'New Zealand Dollar'], ['ZAR', 'South African Rand'], ['TRY', 'Turkish Lira'],
 ];
 const pages = [
+  { id: 'home', label: 'Home', icon: House },
   { id: 'tax', label: 'Income Tax', icon: Calculator },
   { id: 'currency', label: 'Currency', icon: ArrowDownUp },
   { id: 'gold', label: 'Gold Rates', icon: Coins },
   { id: 'salary', label: 'Salary', icon: Wallet },
   { id: 'expenses', label: 'Expenses', icon: RefreshCw },
+  { id: 'guides', label: 'Guides', icon: BookOpenText },
+];
+const toolCards = [
+  { id: 'tax', title: 'Income tax', description: 'Estimate your tax bill across supported countries.', icon: Calculator, tag: '6 countries' },
+  { id: 'currency', title: 'Currency converter', description: 'Convert currencies with current reference rates.', icon: ArrowDownUp, tag: '18 currencies' },
+  { id: 'gold', title: 'Gold rates', description: 'Check gold spot prices by currency and weight.', icon: Coins, tag: 'Live reference' },
+  { id: 'salary', title: 'Salary calculator', description: 'See estimated take-home pay after income tax.', icon: Wallet, tag: 'Net pay' },
+  { id: 'expenses', title: 'Expense planner', description: 'Map monthly spending and see what remains.', icon: ChartNoAxesCombined, tag: 'Monthly budget' },
+  { id: 'guides', title: 'Financial guides', description: 'Practical explainers for more confident decisions.', icon: BookOpenText, tag: 'Learn the basics' },
+];
+const guides = [
+  { title: 'A simple way to build a monthly budget', category: 'BUDGETING', icon: ChartNoAxesCombined, text: 'Start with take-home income, cover essentials, set aside savings, then give flexible spending a clear limit.' },
+  { title: 'What to gather before estimating your taxes', category: 'TAX BASICS', icon: Calculator, text: 'Check your tax residency, pay frequency and taxable income. Keep in mind that deductions and local taxes can change the final amount.' },
+  { title: 'How to compare exchange rates', category: 'CURRENCY', icon: ArrowDownUp, text: 'Compare the provider’s final rate and fees, not just the headline rate. Reference rates are useful for a baseline, not a guaranteed offer.' },
+  { title: 'Understanding gold spot prices', category: 'GOLD', icon: Coins, text: 'Spot prices are market references. Retail prices can also include purity, fabrication, taxes and local premiums.' },
+];
+const pakistanTaxFaqs = [
+  {
+    question: 'How much tax is estimated on a Rs 100,000 monthly salary in Pakistan?',
+    answer: 'That is Rs 1,200,000 annual gross salary. Under this calculator’s current salaried-person tax-year 2026–27 assumptions, the estimated income tax is Rs 6,000 per year, or about Rs 500 per month. Actual liability can differ; verify applicable rates with the FBR.',
+  },
+  {
+    question: 'What is the tax-free salary limit in this Pakistan calculator for 2026–27?',
+    answer: 'The current Pakistan salaried estimate applies a 0% rate to the first Rs 600,000 of annual income. This reflects the calculator’s Finance Bill 2026 assumptions and is not a confirmation of your personal tax status. Check the enacted Finance Act and FBR guidance.',
+  },
+  {
+    question: 'Can I calculate monthly and annual salary tax?',
+    answer: 'Yes. Enter a gross monthly or annual salary and select the matching period. The calculator converts monthly pay to an annual amount for the estimate, then shows annual tax, monthly tax, effective tax rate and estimated take-home pay.',
+  },
+  {
+    question: 'Which Pakistan income tax slabs and rates are used for 2026–27?',
+    answer: 'The current estimate uses the salaried-person bands in this tool: 0% up to Rs 600,000; then 1%, 11%, 20%, 25%, 29%, 32% and 35% across progressively higher annual income bands. These are calculator assumptions based on Finance Bill 2026, not a substitute for confirming the enacted Finance Act or current FBR tax slabs.',
+  },
+  {
+    question: 'Is this an official FBR tax calculator, and does it cover business income?',
+    answer: 'No. It is an independent estimate for salaried individuals, not an official FBR tax calculator. Business income, non-salaried tax, withholding tax adjustments, deductions and individual credits are not calculated. Review the current FBR tax slabs and consult a qualified tax professional for your situation.',
+  },
+];
+const pakistanTaxKeywords = [
+  'income tax calculator',
+  'salary tax calculator',
+  'income tax calculator Pakistan',
+  'salary tax calculator Pakistan',
+  'FBR tax calculator',
+  'Pakistan income tax calculator 2026',
+  'salary tax calculator 2026–27',
+  'monthly salary tax calculator Pakistan',
+  'annual income tax calculator Pakistan',
+  'take home salary calculator Pakistan',
+  'FBR salaried tax calculator',
+  'income tax slabs 2026–27 Pakistan',
+  'tax on salary in Pakistan',
+  'how much tax on 100000 salary Pakistan',
+  'tax free salary limit Pakistan 2026',
+  'income tax calculator for salaried persons',
+  'business income tax calculator Pakistan',
+  'non-salaried tax calculator Pakistan',
+  'FBR tax slabs',
+  'Finance Act 2026 tax slabs',
+  'tax year 2027 Pakistan',
+  'withholding tax on salary',
+  'effective tax rate calculator',
+  'take-home pay calculator',
+  'salary after tax calculator',
+  'Pakistan tax calculator online',
+  'income tax rates Pakistan 2026',
 ];
 const expenseTypes = ['Housing', 'Food', 'Transport', 'Utilities', 'Healthcare', 'Other'];
 const GRAMS_PER_TROY_OUNCE = 31.1034768;
@@ -44,8 +111,16 @@ function CurrencySelect({ value, onChange, label }) {
   );
 }
 
+function BackToTools({ onClick }) {
+  return (
+    <button className="back-to-tools" type="button" onClick={onClick}>
+      <ArrowDownUp size={15} /> Back to all tools
+    </button>
+  );
+}
+
 export default function App() {
-  const [page, setPage] = useState('tax');
+  const [page, setPage] = useState('home');
   const [code, setCode] = useState('PK');
   const [income, setIncome] = useState('2400000');
   const [period, setPeriod] = useState('year');
@@ -67,6 +142,13 @@ export default function App() {
   const [goldLoading, setGoldLoading] = useState(false);
 
   const country = countries[code];
+  const openPakistanTax = () => {
+    setCode('PK');
+    setPage('tax');
+    window.setTimeout(() => {
+      document.getElementById('tool-content')?.scrollIntoView({ behavior: 'smooth' });
+    }, 0);
+  };
   const annualIncome = (Number(income) || 0) * (period === 'month' ? 12 : 1);
   const taxResult = useMemo(() => calculate(code, annualIncome), [code, annualIncome]);
   const annualSalary = (Number(salary) || 0) * (salaryPeriod === 'month' ? 12 : 1);
@@ -152,7 +234,14 @@ export default function App() {
     <>
       <header>
         <div className="nav">
-          <a className="brand" href="#" onClick={() => setPage('tax')}>
+          <a
+            className="brand"
+            href="#"
+            onClick={(event) => {
+              event.preventDefault();
+              setPage('home');
+            }}
+          >
             <span className="brandIcon"><Calculator size={21} /></span>
             Money<span>Tools</span>
           </a>
@@ -170,22 +259,97 @@ export default function App() {
             ))}
           </nav>
           <button className="navBtn" onClick={() => document.getElementById('tool-content')?.scrollIntoView({ behavior: 'smooth' })}>
-            Open tool <ArrowUpRight size={16} />
+            Explore tools <ArrowUpRight size={16} />
           </button>
         </div>
       </header>
 
       <main>
         <section className="hero">
-          <div className="eyebrow"><Globe2 size={15} /> GLOBAL MONEY TOOLS</div>
-          <h1>Make money moves.<br /><em>With more clarity.</em></h1>
-          <p>Tax, currency, gold, salary and expense tools in one place.</p>
-          <div className="heroTags"><span>Free to use</span><span>Easy estimates</span><span>Mobile friendly</span></div>
+          <div className="hero-layout">
+            <div className="hero-copy">
+              <div className="eyebrow"><Globe2 size={15} /> YOUR INTERNATIONAL FINANCIAL TOOLKIT</div>
+              <h1>Make money moves.<br /><em>With more clarity.</em></h1>
+              <p>Useful calculators and straightforward guides for wherever life takes you.</p>
+              <div className="heroTags"><span>Free to use</span><span>Easy estimates</span><span>Mobile friendly</span></div>
+            </div>
+            <img className="hero-illustration" src="/finance-hero.svg" alt="" aria-hidden="true" />
+          </div>
         </section>
 
         <div id="tool-content">
+          {page === 'home' && (
+            <section className="home-content">
+              <div className="home-intro">
+                <div>
+                  <div className="eyebrow"><Sparkles size={14} /> MONEY TOOLS, MADE SIMPLE</div>
+                  <h2>Make your next move<br />a more informed one.</h2>
+                  <p>Explore practical tools for everyday money questions—from your paycheck to prices around the world.</p>
+                  <button className="primary" onClick={() => setPage('tax')}>Try the tax calculator <ArrowUpRight size={16} /></button>
+                </div>
+                <div className="home-visual" aria-label="Illustration of financial planning tools">
+                  <img className="toolkit-illustration" src="/finance-toolkit.svg" alt="" aria-hidden="true" />
+                  <div className="visual-chip chip-tax"><Calculator size={16} /> Tax estimate</div>
+                  <div className="visual-chip chip-currency"><ArrowDownUp size={16} /> FX rates</div>
+                  <div className="visual-chip chip-gold"><Coins size={16} /> Gold price</div>
+                </div>
+              </div>
+
+              <div className="section-heading">
+                <div><div className="eyebrow">EXPLORE THE TOOLKIT</div><h2>What would you like to work out?</h2></div>
+                <span><ShieldCheck size={16} /> Free tools, clear assumptions</span>
+              </div>
+              <div className="tool-card-grid">
+                {toolCards.map(({ id, title, description, icon: Icon, tag }) => (
+                  <button className="tool-card" type="button" key={id} onClick={() => setPage(id)}>
+                    <span className="tool-card-icon"><Icon size={20} /></span>
+                    <span className="tool-card-tag">{tag}</span>
+                    <strong>{title}</strong>
+                    <span className="tool-card-description">{description}</span>
+                    <span className="tool-card-link">Open tool <ArrowUpRight size={15} /></span>
+                  </button>
+                ))}
+              </div>
+              <section className="pakistan-tax-seo" aria-labelledby="pakistan-tax-heading">
+                <div className="eyebrow">PAKISTAN · TAX YEAR 2026–27</div>
+                <h2 id="pakistan-tax-heading">Pakistan income tax and salary tax calculator</h2>
+                <p>Use this online Pakistan income tax calculator to estimate salaried-person tax from a monthly or yearly gross salary. It works as a salary tax calculator and salary-after-tax calculator, showing annual and monthly tax, effective tax rate and estimated take-home pay. It is a starting point for questions like “tax on salary in Pakistan” and “take-home salary calculator Pakistan”—not an official FBR assessment.</p>
+                <button className="seo-tax-link" type="button" onClick={() => setPage('tax')}>Calculate Pakistan salary tax <ArrowUpRight size={16} /></button>
+                <div className="pakistan-tax-faqs">
+                  <h3>Pakistan salary tax calculator: common questions</h3>
+                  {pakistanTaxFaqs.map(({ question, answer }) => (
+                    <details key={question}>
+                      <summary>{question}</summary>
+                      <p>{answer}</p>
+                    </details>
+                  ))}
+                </div>
+                <div className="tax-keywords">
+                  <h3>Related Pakistan tax calculators and topics</h3>
+                  <div className="tax-keyword-list">
+                    {pakistanTaxKeywords.map(keyword => (
+                      <a
+                        key={keyword}
+                        href="#tool-content"
+                        onClick={event => {
+                          event.preventDefault();
+                          openPakistanTax();
+                        }}
+                      >
+                        {keyword}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+                <p className="disclaimer">Rates and tax slabs shown here are based on the calculator’s Finance Bill 2026 salaried-person assumptions for 2026–27. This tool does not calculate business or non-salaried income, withholding tax adjustments or personal deductions. Check the enacted Finance Act and current FBR guidance before relying on an estimate.</p>
+              </section>
+              <div className="home-note"><ShieldCheck size={18} /><p><b>A helpful starting point, not financial advice.</b> Rates and estimates are indicative. Always check official sources and provider terms before making decisions.</p></div>
+            </section>
+          )}
+
           {page === 'tax' && (
             <section className="calculatorWrap">
+              <BackToTools onClick={() => setPage('home')} />
               <div className="calcHead">
                 <div>
                   <div className="eyebrow">INCOME TAX CALCULATOR</div>
@@ -252,6 +416,7 @@ export default function App() {
 
           {page === 'currency' && (
             <section className="calculatorWrap tool-page">
+              <BackToTools onClick={() => setPage('home')} />
               <div className="eyebrow">CURRENCY CONVERTER</div>
               <h2>Convert currencies at a glance</h2>
               <p className="tool-intro">Compare an amount using the latest available reference exchange rates.</p>
@@ -277,6 +442,7 @@ export default function App() {
 
           {page === 'gold' && (
             <section className="calculatorWrap tool-page">
+              <BackToTools onClick={() => setPage('home')} />
               <div className="eyebrow">GLOBAL GOLD RATES</div>
               <h2>Gold prices around the world</h2>
               <p className="tool-intro">See an indicative gold spot price converted into popular currencies and common weights.</p>
@@ -307,6 +473,7 @@ export default function App() {
 
           {page === 'salary' && (
             <section className="calculatorWrap tool-page">
+              <BackToTools onClick={() => setPage('home')} />
               <div className="eyebrow">SALARY CONVERTER</div>
               <h2>Estimate your take-home pay</h2>
               <p className="tool-intro">Convert a gross salary into estimated net pay using the selected country’s tax estimate.</p>
@@ -328,6 +495,7 @@ export default function App() {
 
           {page === 'expenses' && (
             <section className="calculatorWrap tool-page">
+              <BackToTools onClick={() => setPage('home')} />
               <div className="eyebrow">MONTHLY EXPENSE CALCULATOR</div>
               <h2>Plan your monthly spending</h2>
               <p className="tool-intro">Add your monthly take-home income and expenses to see what remains.</p>
@@ -346,6 +514,26 @@ export default function App() {
                 <div><span>Income spent</span><b>{(Number(expenseIncome) > 0 ? expenseTotal / Number(expenseIncome) * 100 : 0).toFixed(1)}%</b></div>
               </div>
               <p className="disclaimer">This is a simple budgeting estimate, not financial advice. Expenses use your selected country’s currency ({country.currency}).</p>
+            </section>
+          )}
+
+          {page === 'guides' && (
+            <section className="calculatorWrap tool-page guides-page">
+              <BackToTools onClick={() => setPage('home')} />
+              <div className="eyebrow"><BookOpenText size={14} /> MONEY, MADE CLEARER</div>
+              <h2>Financial guides for everyday decisions</h2>
+              <p className="tool-intro">Short, practical explainers to help you understand the numbers behind common money questions.</p>
+              <div className="guide-grid">
+                {guides.map(({ title, category, icon: Icon, text }) => (
+                  <article className="guide-card" key={title}>
+                    <div className="guide-icon"><Icon size={19} /></div>
+                    <span>{category}</span>
+                    <h3>{title}</h3>
+                    <p>{text}</p>
+                  </article>
+                ))}
+              </div>
+              <p className="disclaimer">These guides are general educational information, not personalized financial, tax or legal advice. Rules and costs vary by country and individual circumstances.</p>
             </section>
           )}
         </div>

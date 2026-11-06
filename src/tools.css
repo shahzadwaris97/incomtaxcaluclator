@@ -476,6 +476,10 @@ header { background: #fbfdfc; border-bottom-color: #e4ede8; }
 .calcHead h2, .countries h2, .about h2, .tool-page > h2,
 .home-intro h2, .section-heading h2 { color: #153b34; }
 .calcHead p, .countries > p, .tool-intro { color: #70837d; }
+.calculatorWrap {
+  position: relative;
+  z-index: 1;
+}
 .calculatorWrap, .home-intro {
   border-color: #e2ece7;
   box-shadow: 0 22px 65px #103d3010, 0 2px 8px #103d3008;

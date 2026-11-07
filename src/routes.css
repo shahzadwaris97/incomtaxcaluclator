@@ -1,0 +1,14 @@
+/* Crawlable, responsive site navigation. Keep the existing app controls for internal panel state. */
+body[data-route] .tool-nav { display: none !important; }
+.seo-route-nav { display: flex; justify-content: center; gap: 8px; overflow-x: auto; padding: 10px 16px; border-bottom: 1px solid #e2ece7; background: #fbfdfc; white-space: nowrap; }
+.seo-route-nav a { padding: 7px 10px; border-radius: 8px; color: #60766e; font-size: 13px; text-decoration: none; }
+.seo-route-nav a:hover, .seo-route-nav a[aria-current="page"] { background: #e7f6ef; color: #167c61; }
+.seo-route-nav a:focus-visible { outline: 3px solid #48b982; outline-offset: 2px; }
+.route-intro { max-width: 1072px; margin: 28px auto 0; padding: 26px 28px; border: 1px solid #e2ece7; border-radius: 16px; background: #fbfdfc; }
+.route-intro h1 { margin: 0 0 10px; color: #153b34; font: 800 clamp(26px, 4vw, 36px)/1.2 Manrope, sans-serif; }
+.route-intro p { max-width: 900px; color: #60796e; font-size: 14px; line-height: 1.75; }
+.route-intro .route-related { margin-bottom: 0; font-size: 12px; }
+.route-intro a { color: #167c61; }
+body[data-route]:not([data-route="home"]) .hero { display: none; }
+body[data-route]:not([data-route="home"]) #tool-content { padding-top: 20px; }
+@media (max-width: 700px) { .seo-route-nav { justify-content: flex-start; } .route-intro { margin: 16px 14px 0; padding: 20px 17px; } .route-intro p { font-size: 13px; } }

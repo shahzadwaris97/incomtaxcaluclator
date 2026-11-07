@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://incomtaxcaluclator.netlify.app/sitemap.xml
+Sitemap: https://pakistantaxcaluclator.netlify.app/sitemap.xml

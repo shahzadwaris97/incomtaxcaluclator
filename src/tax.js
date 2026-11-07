@@ -1,6 +1,6 @@
 
 export const countries = {
- PK:{name:'Pakistan',currency:'PKR',symbol:'Rs',period:'Tax Year 2026–27',note:'Salaried individuals; annual taxable salary. Based on Finance Bill 2026.',brackets:[
+ PK:{name:'Pakistan',currency:'PKR',symbol:'Rs',period:'Tax Year 2026–27',note:'Salaried individuals; annual taxable salary for Tax Year 2027 (1 July 2026 to 30 June 2027). Based on Finance Act 2026.'.',brackets:[
  {limit:600000,rate:0,base:0},{limit:1200000,rate:.01,base:0},{limit:2200000,rate:.11,base:6000},{limit:3200000,rate:.20,base:116000},{limit:4100000,rate:.25,base:316000},{limit:5600000,rate:.29,base:541000},{limit:7000000,rate:.32,base:976000},{limit:Infinity,rate:.35,base:1424000}]},
  UK:{name:'United Kingdom',currency:'GBP',symbol:'£',period:'Tax Year 2026–27',note:'England, Wales and Northern Ireland estimate. Scotland has different bands; personal allowance taper and other income may change results.',allowance:12570,brackets:[{limit:37700,rate:.20,base:0},{limit:112570,rate:.40,base:7540},{limit:Infinity,rate:.45,base:37488}]},
  US:{name:'United States',currency:'USD',symbol:'$',period:'Tax Year 2026',note:'Federal estimate only for single filers. State/local taxes, credits, payroll taxes and deductions are not included.',allowance:16100,brackets:[{limit:12400,rate:.10,base:0},{limit:50400,rate:.12,base:1240},{limit:105700,rate:.22,base:5800},{limit:201775,rate:.24,base:17966},{limit:256225,rate:.32,base:41024},{limit:640600,rate:.35,base:58448},{limit:Infinity,rate:.37,base:192979.25}]},

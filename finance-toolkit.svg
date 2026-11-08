@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="320" viewBox="0 0 480 320" fill="none">
+  <defs>
+    <linearGradient id="paper" x1="152" y1="45" x2="332" y2="268" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FBFFFC"/>
+      <stop offset="1" stop-color="#D2EEDD"/>
+    </linearGradient>
+    <linearGradient id="calculator" x1="313" y1="131" x2="397" y2="257" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#51C88D"/>
+      <stop offset="1" stop-color="#11775D"/>
+    </linearGradient>
+    <filter id="shadow" x="47" y="23" width="385" height="282" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="10"/>
+      <feOffset dy="8"/>
+      <feColorMatrix values="0 0 0 0 .06 0 0 0 0 .24 0 0 0 0 .16 0 0 0 .2 0"/>
+      <feBlend in2="SourceGraphic" result="shadow"/>
+      <feComposite in="SourceGraphic" in2="shadow" operator="over"/>
+    </filter>
+  </defs>
+  <ellipse cx="240" cy="270" rx="167" ry="22" fill="#6FB996" fill-opacity=".11"/>
+  <circle cx="239" cy="161" r="113" stroke="#61B98C" stroke-opacity=".27"/>
+  <circle cx="239" cy="161" r="91" stroke="#61B98C" stroke-opacity=".24" stroke-dasharray="3 8"/>
+  <g filter="url(#shadow)" transform="rotate(-5 236 157)">
+    <path d="M151 48a15 15 0 0 1 15-15h133l42 42v178a15 15 0 0 1-15 15H166a15 15 0 0 1-15-15V48Z" fill="url(#paper)" stroke="#fff" stroke-width="2"/>
+    <path d="M299 33v34a9 9 0 0 0 9 9h33" fill="#D6F1E1" stroke="#B6DEC8" stroke-width="2"/>
+    <text x="174" y="98" fill="#174A3B" font-family="Arial,sans-serif" font-size="15" font-weight="700">TAX SUMMARY</text>
+    <text x="174" y="114" fill="#668579" font-family="Arial,sans-serif" font-size="8" font-weight="600" letter-spacing="1">ANNUAL ESTIMATE</text>
+    <rect x="174" y="127" width="137" height="44" rx="8" fill="#E8F5EC"/>
+    <text x="185" y="144" fill="#668579" font-family="Arial,sans-serif" font-size="8">TAXABLE INCOME</text>
+    <text x="185" y="162" fill="#194D3C" font-family="Arial,sans-serif" font-size="14" font-weight="700">$48,500</text>
+    <rect x="174" y="180" width="137" height="44" rx="8" fill="#E8F5EC"/>
+    <text x="185" y="197" fill="#668579" font-family="Arial,sans-serif" font-size="8">ESTIMATED TAX</text>
+    <text x="185" y="215" fill="#167C61" font-family="Arial,sans-serif" font-size="14" font-weight="700">$6,240</text>
+    <circle cx="295" cy="206" r="8" fill="#D2EEDD"/>
+    <path d="m291 206 3 3 5-6" stroke="#168360" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <g transform="rotate(8 354 192)">
+    <rect x="317" y="128" width="85" height="132" rx="16" fill="#0B3432" fill-opacity=".18"/>
+    <rect x="312" y="122" width="85" height="132" rx="16" fill="url(#calculator)" stroke="#A8F0C7" stroke-width="2"/>
+    <rect x="323" y="134" width="63" height="32" rx="7" fill="#0A4038" fill-opacity=".74"/>
+    <text x="332" y="145" fill="#BCEED0" font-family="Arial,sans-serif" font-size="7">TAX DUE</text>
+    <text x="332" y="159" fill="#F1FFF5" font-family="Arial,sans-serif" font-size="12" font-weight="700">$6,240</text>
+    <g fill="#D9F6E5">
+      <rect x="324" y="175" width="14" height="13" rx="4"/>
+      <rect x="345" y="175" width="14" height="13" rx="4"/>
+      <rect x="366" y="175" width="14" height="13" rx="4"/>
+      <rect x="324" y="194" width="14" height="13" rx="4" fill-opacity=".85"/>
+      <rect x="345" y="194" width="14" height="13" rx="4" fill-opacity=".85"/>
+      <rect x="366" y="194" width="14" height="13" rx="4" fill-opacity=".85"/>
+      <rect x="324" y="213" width="14" height="13" rx="4" fill-opacity=".7"/>
+      <rect x="345" y="213" width="14" height="13" rx="4" fill-opacity=".7"/>
+      <rect x="366" y="213" width="14" height="13" rx="4" fill-opacity=".7"/>
+    </g>
+  </g>
+  <circle cx="111" cy="103" r="7" fill="#49BC82" fill-opacity=".75"/>
+  <circle cx="365" cy="91" r="5" fill="#D4AE50" fill-opacity=".85"/>
+  <circle cx="390" cy="149" r="3" fill="#6BBF90"/>
+</svg>
